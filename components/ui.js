@@ -1,0 +1,8 @@
+export function icon(name,size=18){return `<i data-lucide="${name}" width="${size}" height="${size}"></i>`;}
+export function toast(message,type="success"){const host=document.querySelector("#toast-region");if(!host)return;const el=document.createElement("div");el.className="toast "+(type==="error"?"error":"");el.textContent=message;host.append(el);setTimeout(()=>el.remove(),3600);}
+export function money(value){return new Intl.NumberFormat("sw-TZ",{style:"currency",currency:"TZS",maximumFractionDigits:0}).format(Number(value)||0);}
+export function escapeHTML(value=""){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+export function emptyState(title,message,actionLabel="",action="home"){return `<div class="empty-state animate-in"><div class="empty-icon">${icon("package-open",26)}</div><h3>${escapeHTML(title)}</h3><p>${escapeHTML(message)}</p>${actionLabel?`<button class="btn btn-primary" data-route="${action}">${escapeHTML(actionLabel)}</button>`:""}</div>`;}
+export function badge(verified){return verified?`<span class="badge badge-blue">${icon("badge-check",12)} Verified Store</span>`:"";}
+export function modal(title,body){const host=document.createElement("div");host.className="modal-backdrop";host.innerHTML=`<div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><h3>${escapeHTML(title)}</h3><button class="modal-close" aria-label="Funga">×</button></div>${body}</div>`;document.body.append(host);const close=()=>host.remove();host.querySelector(".modal-close").onclick=close;host.addEventListener("click",e=>{if(e.target===host)close();});return {el:host,close};}
+export function refreshIcons(){if(window.lucide?.createIcons)window.lucide.createIcons();}

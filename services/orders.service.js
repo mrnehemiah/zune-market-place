@@ -1,0 +1,7 @@
+import {supabase} from "./supabase.service.js";import {listDemo,setDemo} from "./storage.service.js";
+export async function getOrders(userId,role="buyer"){if(!supabase)return listDemo("orders").filter(o=>role==="vendor"?o.vendor_id===userId:o.buyer_id===userId);let q=supabase.from("orders").select("id,buyer_id,product_id,quantity,total_price,commission_fee,status,created_at,recipient_name,recipient_phone,delivery_address,delivery_region,delivery_district,payment_status,products(title,image_url,vendor_id)").order("created_at",{ascending:false});q=q.eq(role==="vendor"?"products.vendor_id":"buyer_id",userId);const {data,error}=await q;if(error)throw error;return data||[];}
+export async function placeOrder(userId,product,quantity,delivery){
+ const total=Number(product.price)*Number(quantity);const payload={buyer_id:userId,product_id:product.id,quantity:Number(quantity),total_price:total,commission_fee:Math.round(total*(window.ZUNE_CONFIG?.commissionRate||.03)),recipient_name:delivery.name,recipient_phone:delivery.phone,delivery_address:delivery.address,delivery_region:delivery.region,delivery_district:delivery.district||null,delivery_notes:delivery.notes||null,payment_status:"pending",status:"pending"};
+ if(!supabase){const rows=listDemo("orders");const o={...payload,id:"ZUNE-"+Date.now(),created_at:new Date().toISOString(),vendor_id:product.vendor_id,product};setDemo("orders",[o,...rows]);return o;}
+ const {data,error}=await supabase.from("orders").insert(payload).select().single();if(error)throw error;return data;
+}

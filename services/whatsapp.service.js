@@ -1,0 +1,2 @@
+export function joinChannel(){window.open(window.ZUNE_CONFIG.whatsappChannel,"_blank","noopener,noreferrer");}
+export function contactSupport(){window.open(window.ZUNE_CONFIG.whatsappContact,"_blank","noopener,noreferrer");}

@@ -1,0 +1,2 @@
+import {productGrid} from "../components/product-grid.js";import {icon} from "../components/ui.js";
+export function wishlistPage(products){return `<main class="page-wrap"><h1 class="page-title">Wishlist</h1><p class="page-subtitle">Bidhaa ulizohifadhi kwa ajili ya baadaye.</p>${products.length?productGrid(products):`<div class="empty-state"><div class="empty-icon">${icon("heart",25)}</div><h3>Wishlist yako iko tupu</h3><p>Bonyeza alama ya moyo kwenye bidhaa ili kuihifadhi.</p><button class="btn btn-primary" data-route="categories">Gundua Bidhaa</button></div>`}</main>`;}
